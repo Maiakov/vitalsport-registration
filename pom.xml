@@ -26,6 +26,11 @@
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.6.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>

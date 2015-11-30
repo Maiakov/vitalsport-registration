@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    jdbcUrl: jdbc:postgresql://localhost:5432/postgres
+    jdbcUrl: jdbc:postgresql://localhost:5432/vitalsport
     username: vitalsport
     password:
   jpa:
@@ -16,3 +16,5 @@ spring:
           use_second_level_cache: false
           use_structured_entities: true
         generate_statistics: false
+vitalsport:
+  secretKey: verySecretKey

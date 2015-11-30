@@ -14,4 +14,10 @@ public class Account {
     private String email;
 
     private String password;
+
+    private String nickName;
+
+    private String name;
+
+    private String sername;
 }
