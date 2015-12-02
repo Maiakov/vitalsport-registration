@@ -18,7 +18,7 @@
         <swagger.version>2.0.3</swagger.version>
         <swagger.version>2.0.3</swagger.version>
         <jwt.version>0.6.0</jwt.version>
-        <postgres.version>9.4-1206-jdbc42</postgres.version>
+        <mysql.version>5.1.35</mysql.version>
     </properties>
 
     <parent>
@@ -47,11 +47,6 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgres.version}</version>
         </dependency>
 
         <dependency>
@@ -94,6 +89,10 @@
                     <artifactId>tomcat-jdbc</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
     </dependencies>
