@@ -54,6 +54,7 @@ public class RegistrationController {
             return ResponseEntity.badRequest().body(error);
         }
         response.setHeader("token", token);
+        response.setHeader("Access-Control-Expose-Headers", "token");
         Status error = Status.SUCCESS;
         error.setMessage(payload.getNickName());
         return ResponseEntity.ok().body(error);
