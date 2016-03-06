@@ -1,9 +1,9 @@
 package com.vitalsport.registration.exception;
 
-public class UserNotFoundException extends Exception {
+public class IncorrectNickNameException extends Exception {
 
     @Override
     public String getMessage() {
-        return "User not found exception";
+        return "Incorrect nick name";
     }
 }

@@ -1,6 +1,7 @@
 package com.vitalsport.registration.web;
 
-import com.vitalsport.registration.exeption.UserNotFoundException;
+import com.vitalsport.registration.exception.IncorrectNickNameException;
+import com.vitalsport.registration.exception.UserNotFoundException;
 import com.vitalsport.registration.model.Account;
 import com.vitalsport.registration.model.Status;
 import com.vitalsport.registration.service.AccountService;
@@ -25,39 +26,47 @@ public class RegistrationController {
             success.setMessage("Login is free");
             return ResponseEntity.ok(success);
         }
-        Status error = Status.ERROR;
-        error.setMessage("Login is busy");
-        return ResponseEntity.badRequest().body(error);
+        return returnError("Login is busy");
     }
 
     @RequestMapping(value = "/saveAccount", method = RequestMethod.POST)
-    public ResponseEntity<Status> saveAccount(@RequestBody Account payload) {
+    public ResponseEntity<Status> saveAccount(@RequestBody Account payload, HttpServletResponse response) {
         if (!accountService.isLoginFree(payload.getEmail())) {
-            Status error = Status.ERROR;
-            error.setMessage("Account not saved - login is busy");
-            return ResponseEntity.badRequest().body(error);
+            return returnError("Account not saved - login is busy");
         }
-        accountService.saveAccount(payload);
-        Status error = Status.SUCCESS;
-        error.setMessage("Account saved");
-        return ResponseEntity.ok(Status.SUCCESS);
+        try {
+            String token = accountService.saveAccount(payload);
+            addTokenToResponse(response, token);
+            Status status = Status.SUCCESS;
+            status.setMessage("Account saved");
+            return ResponseEntity.ok(status);
+        } catch (IncorrectNickNameException | UserNotFoundException e) {
+            return returnError("User not found");
+        }
+
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<Status> login(@RequestBody Account payload, HttpServletResponse response) {
-        String token = null;
         try {
-            token = accountService.login(payload);
-        } catch (UserNotFoundException e) {
-            Status error = Status.ERROR;
-            error.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(error);
+            Status status = Status.SUCCESS;
+            addTokenToResponse(response, accountService.login(payload));
+            status.setMessage(payload.getNickName());
+            return ResponseEntity.ok().body(status);
+        } catch (IncorrectNickNameException | UserNotFoundException e) {
+            return returnError("User not found");
         }
+    }
+
+    private void addTokenToResponse(HttpServletResponse response, String token) {
         response.setHeader("token", token);
         response.setHeader("Access-Control-Expose-Headers", "token");
-        Status error = Status.SUCCESS;
-        error.setMessage(payload.getNickName());
-        return ResponseEntity.ok().body(error);
+    }
+
+    private ResponseEntity<Status> returnError(String message) {
+        Status status = Status.ERROR;
+        status.setMessage(message);
+        return ResponseEntity.badRequest().body(status);
     }
 }
 

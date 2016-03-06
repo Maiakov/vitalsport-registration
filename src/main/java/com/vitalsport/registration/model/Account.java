@@ -1,16 +1,19 @@
 package com.vitalsport.registration.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "account")
 public class Account {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonIgnore
+    private int id;
+
     private String email;
 
     private String password;

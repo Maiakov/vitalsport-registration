@@ -29,6 +29,7 @@ public class TokenGenerator {
         JwtBuilder builder = Jwts.builder().setId(id)
                 .setIssuedAt(now)
                 .setSubject(subject)
+                .setId(id)
                 .signWith(signatureAlgorithm, signingKey);
 
         //if it has been specified, let's add the expiration
