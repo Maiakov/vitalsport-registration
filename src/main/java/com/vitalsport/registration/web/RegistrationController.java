@@ -1,5 +1,6 @@
 package com.vitalsport.registration.web;
 
+import com.vitalsport.registration.exception.IncorrectEmailException;
 import com.vitalsport.registration.exception.IncorrectNickNameException;
 import com.vitalsport.registration.exception.UserNotFoundException;
 import com.vitalsport.registration.model.Account;
@@ -40,7 +41,7 @@ public class RegistrationController {
             Status status = Status.SUCCESS;
             status.setMessage("Account saved");
             return ResponseEntity.ok(status);
-        } catch (IncorrectNickNameException | UserNotFoundException e) {
+        } catch (IncorrectNickNameException | IncorrectEmailException | UserNotFoundException e) {
             return returnError("User not found");
         }
 
@@ -53,7 +54,7 @@ public class RegistrationController {
             addTokenToResponse(response, accountService.login(payload));
             status.setMessage(payload.getNickName());
             return ResponseEntity.ok().body(status);
-        } catch (IncorrectNickNameException | UserNotFoundException e) {
+        } catch (IncorrectNickNameException | IncorrectEmailException | UserNotFoundException e) {
             return returnError("User not found");
         }
     }
