@@ -47,11 +47,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String login(Account account) throws UserNotFoundException, IncorrectNickNameException, IncorrectEmailException {
-        log.info("Login with email {}", account.getEmail());
-        Validator.validateNickName(account.getNickName());
-        Validator.validateEmail(account.getEmail());
-        Account existedAccount = accountRepository.findByEmailAndPasswordOrNickNameAndPassword(account.getEmail(), account.getPassword());
-        if (existedAccount == null || existedAccount.getEmail() == null || existedAccount.getNickName() == null) {
+        log.info("Login with {}", account.getNickName());
+        Account existedAccount = accountRepository.findByEmailAndPasswordOrNickNameAndPassword(account.getNickName(), account.getPassword());
+        if (existedAccount == null) {
             throw new UserNotFoundException();
         }
         return tokenGenerator.createJWT(existedAccount.getNickName(), String.valueOf(existedAccount.getId()), TOKEN_EXPIRATION_MMS);
